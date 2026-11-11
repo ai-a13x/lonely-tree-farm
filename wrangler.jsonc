@@ -1,0 +1,26 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "lonely-tree-farm",
+  "main": "src/worker.ts",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"]
+  },
+  "d1_databases": [
+    { "binding": "DB", "database_name": "lonely-tree-farm", "database_id": "REPLACE_ME" }
+  ],
+  "send_email": [
+    { "name": "ALERT", "destination_address": "alerts@example.com" }
+  ],
+  "vars": {
+    "ACCESS_TEAM_DOMAIN": "",
+    "ACCESS_AUD": ""
+  },
+  "routes": [
+    { "pattern": "lonelytreefarm.com", "custom_domain": true },
+    { "pattern": "www.lonelytreefarm.com", "custom_domain": true }
+  ],
+  "observability": { "enabled": true }
+}

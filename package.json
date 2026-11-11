@@ -1,0 +1,25 @@
+{
+  "name": "lonely-tree-farm",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev --local",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "deploy": "wrangler deploy",
+    "db:migrate:local": "wrangler d1 migrations apply lonely-tree-farm --local",
+    "db:migrate:remote": "wrangler d1 migrations apply lonely-tree-farm --remote"
+  },
+  "devDependencies": {
+    "@cloudflare/vitest-pool-workers": "^0.23.0",
+    "@cloudflare/workers-types": "^5.20261110.1",
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.12",
+    "wrangler": "^4.160.1"
+  },
+  "dependencies": {
+    "jose": "^6.2.17",
+    "mimetext": "^3.0.28"
+  }
+}
