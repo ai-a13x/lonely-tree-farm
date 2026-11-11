@@ -43,6 +43,7 @@ h1,h2,h3{font-weight:400}
 .family-photos{flex:1 1 460px;min-width:0;display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .family-photos img{width:100%;height:420px;object-fit:cover;display:block;border:6px solid var(--paper)}
 .family-photos .pond{object-position:center 40%}
+.family-photos .claire{grid-column:span 2;height:460px;object-position:center 30%}
 .tucker{position:relative}
 .badge{position:absolute;right:-14px;top:-20px;width:112px;height:112px;border-radius:50%;background:var(--mustard);color:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;transform:rotate(10deg)}
 .badge span{font:700 13px/1.1 var(--cond);letter-spacing:.1em;margin-top:4px}
@@ -83,7 +84,7 @@ h1,h2,h3{font-weight:400}
 .gallery{background:var(--ink);padding:6px;display:grid;grid-template-columns:1fr;gap:6px}
 .gallery img{width:100%;height:340px;object-fit:cover;display:block}
 @media (min-width:600px){.gallery{grid-template-columns:1fr 1fr}.gallery .wide{grid-column:span 2}.gallery img{height:400px}}
-@media (min-width:1000px){.gallery{grid-template-columns:2fr 1fr 1fr}.gallery .wide{grid-column:auto}.gallery img{height:440px}}
+@media (min-width:1000px){.gallery{grid-template-columns:2fr 1fr 1fr}.gallery .wide{grid-column:auto}.gallery .tail{grid-column:span 2}.gallery img{height:440px}}
 
 .site-footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;padding-top:48px;padding-bottom:48px;font:700 18px var(--cond);letter-spacing:.1em;text-transform:uppercase}
 
@@ -107,6 +108,7 @@ dialog input,dialog textarea{width:100%;font:18px Barlow,system-ui,sans-serif;pa
   .sticker{left:0;font-size:16px}
   .family,.available,.how{padding-top:64px;padding-bottom:64px}
   .family-photos img{height:300px}
+  .family-photos .claire{height:300px}
   .badge{right:-6px;top:-14px;width:96px;height:96px}
   .marquee{font-size:13px}
   .btn{font-size:20px}
