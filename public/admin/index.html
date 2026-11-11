@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Lonely Tree Farm admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&amp;family=Barlow+Condensed:wght@600;700&amp;family=Barlow:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+:root{--paper:#F1E6D0;--card:#FAF3E4;--ink:#1C1A17;--red:#9E2A1F;--mustard:#E3A92B;--muted:#5B5348;
+  --slab:'Alfa Slab One',Georgia,serif;--cond:'Barlow Condensed','Arial Narrow',sans-serif}
+*{box-sizing:border-box}
+body{margin:0;font:17px/1.45 Barlow,system-ui,sans-serif;color:var(--ink);background:var(--paper)}
+:focus-visible{outline:3px solid var(--mustard);outline-offset:2px}
+a{color:var(--red)}
+header{background:var(--ink);color:var(--mustard);padding:16px 16px}
+header h1{margin:0;font:22px var(--slab);letter-spacing:.02em}
+main{max-width:760px;margin:0 auto;padding:16px}
+h2{margin:32px 0 12px;font:26px var(--slab)}
+.summary{font:700 20px var(--cond);letter-spacing:.04em;text-transform:uppercase;margin:0 0 4px}
+#msg{margin:8px 0 0;font-weight:600;color:var(--red);min-height:1.45em}
+button{font:700 18px var(--cond);letter-spacing:.08em;text-transform:uppercase;min-height:48px;padding:8px 18px;border:3px solid var(--ink);background:none;color:var(--ink);cursor:pointer}
+button:disabled{opacity:.5;cursor:wait}
+.primary{background:var(--red);border-color:var(--red);color:var(--paper)}
+.gold{background:var(--mustard)}
+.card{background:var(--card);border:3px solid var(--ink);padding:16px;margin:0 0 16px}
+.card.off{opacity:.7;border-style:dashed}
+.card h3{margin:0;font:24px var(--slab)}
+.row{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;justify-content:space-between}
+.stock{display:flex;align-items:center;gap:12px;margin:12px 0}
+.stock button{width:64px;min-height:56px;font-size:30px;padding:0}
+.count{font:700 40px var(--cond);min-width:90px;text-align:center}
+.count small{font-size:20px;color:var(--muted)}
+.tag{font:700 14px var(--cond);letter-spacing:.14em;text-transform:uppercase;padding:2px 8px;border:2px solid var(--ink)}
+.tag.hide{background:var(--ink);color:var(--paper)}
+details{margin-top:8px}
+summary{font:700 18px var(--cond);letter-spacing:.08em;text-transform:uppercase;cursor:pointer;padding:12px 0;min-height:48px}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:10px 12px;margin-top:4px}
+.fields .full{grid-column:1/-1}
+label{display:block;font:700 15px var(--cond);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+input,textarea{display:block;width:100%;margin-top:2px;font:17px Barlow,system-ui,sans-serif;padding:10px;border:2px solid var(--ink);background:#fff;color:var(--ink);border-radius:0;min-height:44px}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.res{background:var(--card);border:3px solid var(--ink);padding:14px 16px;margin:0 0 12px}
+.res.done{opacity:.65;border-width:2px}
+.res h3{margin:0;font:700 22px var(--cond);text-transform:uppercase;letter-spacing:.04em}
+.res p{margin:4px 0}
+.res .phone{font-size:20px;font-weight:600}
+.badge{font:700 14px var(--cond);letter-spacing:.14em;text-transform:uppercase;padding:2px 8px;background:var(--mustard);border:2px solid var(--ink)}
+.badge.wait{background:var(--paper)}
+.small{color:var(--muted);font-size:15px}
+@media (max-width:420px){.fields{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><h1>Lonely Tree Farm admin</h1></header>
+<main>
+  <p class="summary" id="summary" aria-live="polite">Loading...</p>
+  <p id="msg" role="alert"></p>
+
+  <h2>Stock</h2>
+  <div id="stock"></div>
+  <details id="add"><summary>Add a listing</summary>
+    <form id="add-form" class="card"></form>
+  </details>
+
+  <h2>Reservations</h2>
+  <div id="waiting"></div>
+  <details><summary id="finished-title">Finished</summary><div id="finished"></div></details>
+</main>
+<script>
+const $ = (id) => document.getElementById(id);
+const msg = $('msg');
+
+function h(tag, attrs, ...kids) {
+  const n = document.createElement(tag);
+  Object.assign(n, attrs);
+  n.append(...kids.filter((k) => k !== null && k !== false));
+  return n;
+}
+
+async function api(path, method = 'GET', body) {
+  const res = await fetch('/api/admin/' + path, {
+    method,
+    headers: body ? { 'content-type': 'application/json' } : {},
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(res.status === 403 ? 'You are not signed in. Reload the page.' : data.error || 'Something went wrong.');
+  return data;
+}
+
+async function act(button, fn) {
+  button.disabled = true;
+  msg.textContent = '';
+  try {
+    await fn();
+    await load();
+  } catch (e) {
+    msg.textContent = e.message;
+    button.disabled = false;
+  }
+}
+
+function field(name, label, value, opts = {}) {
+  const { full, area, ...attrs } = opts;
+  const input = area ? h('textarea', { name, rows: 2, value }) : h('input', { name, value, ...attrs });
+  return h('label', { className: full ? 'full' : '' }, label, input);
+}
+
+function listingFields(l) {
+  return [
+    field('name', 'Name', l.name, { full: true, maxLength: 100, required: true }),
+    field('blurb', 'Description', l.blurb, { full: true, area: true }),
+    field('ready', 'Ready (e.g. March 2027)', l.ready, { full: true }),
+    field('price', 'Price (empty shows Ask Alex)', l.price, { full: true }),
+    field('total', 'Total shares', l.total, { type: 'number', min: 0, inputMode: 'numeric' }),
+    field('remaining', 'Left', l.remaining, { type: 'number', min: 0, inputMode: 'numeric' }),
+    field('sort', 'Order (low shows first)', l.sort, { type: 'number', inputMode: 'numeric' }),
+  ];
+}
+
+function readFields(form) {
+  const f = new FormData(form);
+  const out = {};
+  for (const [k, v] of f) out[k] = ['total', 'remaining', 'sort'].includes(k) ? Number(v) : v;
+  return out;
+}
+
+function stockCard(l) {
+  const form = h('form', { className: 'fields' }, ...listingFields(l));
+  const save = h('button', { type: 'submit', className: 'primary' }, 'Save changes');
+  form.append(h('div', { className: 'full actions' }, save));
+  form.addEventListener('submit', (e) => { e.preventDefault(); act(save, () => api('listings/' + l.id, 'PATCH', readFields(form))); });
+  const minus = h('button', { type: 'button', 'aria-label': 'One fewer ' + l.name + ' left', disabled: l.remaining < 1 }, '−');
+  const plus = h('button', { type: 'button', 'aria-label': 'One more ' + l.name + ' left', disabled: l.remaining >= l.total }, '+');
+  minus.addEventListener('click', () => act(minus, () => api('listings/' + l.id + '/adjust', 'POST', { delta: -1 })));
+  plus.addEventListener('click', () => act(plus, () => api('listings/' + l.id + '/adjust', 'POST', { delta: 1 })));
+  const toggle = h('button', { type: 'button' }, l.active ? 'Hide from website' : 'Show on website');
+  toggle.addEventListener('click', () => act(toggle, () => api('listings/' + l.id, 'PATCH', { active: !l.active })));
+  return h('article', { className: 'card' + (l.active ? '' : ' off') },
+    h('div', { className: 'row' }, h('h3', {}, l.name), h('span', { className: l.active ? 'tag' : 'tag hide' }, l.active ? 'On the website' : 'Hidden')),
+    h('div', { className: 'stock' }, minus, h('div', { className: 'count', 'aria-live': 'polite' }, String(l.remaining), h('small', {}, ' of ' + l.total)), plus),
+    h('div', { className: 'actions' }, toggle),
+    h('details', {}, h('summary', {}, 'Edit details'), form));
+}
+
+function reservationCard(r) {
+  const open = r.status === 'open';
+  const buttons = open ? (() => {
+    const collected = h('button', { type: 'button', className: 'gold' }, 'Mark collected');
+    const cancel = h('button', { type: 'button' }, 'Cancel');
+    collected.addEventListener('click', () => act(collected, () => api('reservations/' + r.id + '/status', 'POST', { status: 'collected' })));
+    cancel.addEventListener('click', () => {
+      const back = r.kind === 'reservation' ? ' One share goes back on the website.' : '';
+      if (confirm('Cancel ' + r.name + "'s " + (r.kind === 'reservation' ? 'reservation' : 'waiting list place') + '?' + back)) {
+        act(cancel, () => api('reservations/' + r.id + '/status', 'POST', { status: 'cancelled' }));
+      }
+    });
+    return h('div', { className: 'actions' }, collected, cancel);
+  })() : null;
+  return h('article', { className: 'res' + (open ? '' : ' done') },
+    h('div', { className: 'row' },
+      h('h3', {}, r.name),
+      h('span', { className: r.kind === 'reservation' ? 'badge' : 'badge wait' }, r.kind === 'reservation' ? 'Reserved' : 'Waiting list')),
+    h('p', {}, h('a', { className: 'phone', href: 'tel:' + r.phone.replace(/[^\d+]/g, '') }, r.phone)),
+    r.email ? h('p', {}, h('a', { href: 'mailto:' + r.email }, r.email)) : null,
+    r.note ? h('p', {}, r.note) : null,
+    h('p', { className: 'small' }, r.listing_name + ' · ' + new Date(r.created_at).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }) + (open ? '' : ' · ' + r.status)),
+    buttons);
+}
+
+async function load() {
+  const { listings, reservations } = await api('data');
+  const shares = listings.filter((l) => l.active).reduce((n, l) => n + l.remaining, 0);
+  const waiting = reservations.filter((r) => r.status === 'open' && r.kind === 'reservation').length;
+  $('summary').textContent = shares + (shares === 1 ? ' share' : ' shares') + ' on the website. ' + waiting + (waiting === 1 ? ' reservation' : ' reservations') + ' waiting for a call.';
+  const openIds = new Set([...document.querySelectorAll('#stock details[open]')].map((d) => d.closest('article').dataset.id));
+  $('stock').replaceChildren(...(listings.length ? listings.map((l) => {
+    const card = stockCard(l);
+    card.dataset.id = l.id;
+    if (openIds.has(String(l.id))) card.querySelector('details').open = true;
+    return card;
+  }) : [h('p', {}, 'No listings yet. Add one below.')]));
+  const open = reservations.filter((r) => r.status === 'open');
+  const finished = reservations.filter((r) => r.status !== 'open');
+  $('waiting').replaceChildren(...(open.length ? open.map(reservationCard) : [h('p', {}, 'Nothing waiting.')]));
+  $('finished-title').textContent = 'Finished (' + finished.length + ')';
+  $('finished').replaceChildren(...finished.map(reservationCard));
+}
+
+const addForm = $('add-form');
+const addSave = h('button', { type: 'submit', className: 'primary' }, 'Add listing');
+addForm.className = 'card fields';
+addForm.append(
+  field('name', 'Name (e.g. The Half)', '', { full: true, maxLength: 100, required: true }),
+  field('blurb', 'Description', '', { full: true, area: true }),
+  field('ready', 'Ready (e.g. March 2027)', '', { full: true }),
+  field('price', 'Price (empty shows Ask Alex)', '', { full: true }),
+  field('total', 'Total shares', 4, { type: 'number', min: 0, inputMode: 'numeric', required: true }),
+  field('sort', 'Order (low shows first)', 0, { type: 'number', inputMode: 'numeric' }),
+  h('div', { className: 'full actions' }, addSave));
+addForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  act(addSave, async () => {
+    await api('listings', 'POST', readFields(addForm));
+    addForm.reset();
+    $('add').open = false;
+  });
+});
+
+load().catch((e) => { msg.textContent = e.message; $('summary').textContent = ''; });
+</script>
+</body>
+</html>
