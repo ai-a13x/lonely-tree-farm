@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lonely Tree Farm | Half and quarter cows, La Grange, Kentucky</title>
+<meta name="description" content="Grass-fed beef raised by the Babey family in La Grange, Kentucky. Reserve a half or a quarter cow online. Nothing to pay until Alex calls.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&amp;family=Barlow+Condensed:wght@600;700&amp;family=Barlow:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body>
+<div class="page">
+
+<div class="marquee" aria-hidden="true">HALF COWS &#183; QUARTER COWS &#183; GRASS-FED &#183; LA GRANGE, KENTUCKY &#183; FAMILY RAISED &#183; HALF COWS &#183; QUARTER COWS &#183; GRASS-FED &#183; LA GRANGE, KENTUCKY &#183; FAMILY RAISED &#183; HALF COWS &#183; QUARTER COWS</div>
+
+<header class="wrap site-header">
+  <a class="brand" href="#top">LONELY TREE FARM</a>
+  <nav aria-label="Main">
+    <a href="#family">The family</a>
+    <a href="#available">Available now</a>
+    <a href="#how">How it works</a>
+    <a href="#herd">The herd</a>
+  </nav>
+</header>
+
+<main>
+<section id="top" class="wrap hero">
+  <div class="hero-text">
+    <p class="eyebrow">La Grange, Kentucky</p>
+    <h1>LONELY TREE FARM</h1>
+    <p class="tagline">Reserve your half cow today.</p>
+    <p class="lede">Grass-fed beef raised by the Babey family. We sell halves and quarters a few at a time. Reserve one here and we'll call you to sort the rest.</p>
+    <div class="actions">
+      <a class="btn btn-mustard" href="#available">See what's available</a>
+      <a class="btn btn-outline" href="#how">How it works</a>
+    </div>
+  </div>
+  <div class="hero-photo">
+    <img src="/img/herd-golden.jpg" width="800" height="684" alt="The herd grazing a hillside at golden hour">
+    <p class="sticker">Grass-fed &#183; Family raised</p>
+  </div>
+</section>
+
+<section id="family" class="dark">
+  <div class="wrap family">
+    <div class="family-photos">
+      <img src="/img/alex-pond.jpg" width="1050" height="1400" alt="Alex grinning and holding up a bass by the farm pond" class="pond">
+      <div class="tucker">
+        <img src="/img/tucker.jpg" width="800" height="683" alt="Tucker the corgi standing guard in the autumn leaves">
+        <div class="badge" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 16.8 5.8 20.3l1.6-6.8L2.2 8.9l6.9-.6z" fill="none" stroke="#1C1A17" stroke-width="2" stroke-linejoin="round"></path></svg>
+          <span>HEAD OF<br>SECURITY</span>
+        </div>
+      </div>
+    </div>
+    <div class="family-text">
+      <h2>THE FAMILY</h2>
+      <ul class="roster">
+        <li><span>Alex</span><span>Farmhand</span></li>
+        <li><span>Claire</span><span>Farm Manager</span></li>
+        <li><span>Amy</span><span>Head of Cow Naming</span></li>
+        <li><span>Tucker</span><span>Head of Security</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="available" class="wrap available">
+  <div class="section-head">
+    <div>
+      <p class="kicker">Now taking reservations</p>
+      <h2>AVAILABLE NOW</h2>
+    </div>
+    <p>Reserve a share online. Nothing to pay here. Alex will call to agree price, cuts and timing.</p>
+  </div>
+  <div id="listings" class="cards" aria-live="polite"><p class="empty">Loading...</p></div>
+</section>
+
+<section id="how" class="red">
+  <div class="wrap how">
+    <h2>HOW A SHARE REACHES YOUR FREEZER</h2>
+    <ol>
+      <li><span class="n">1</span><h3>Reserve your share</h3><p>Pick a half or a quarter and leave your name and number. It's held for you straight away.</p></li>
+      <li><span class="n">2</span><h3>Alex calls</h3><p>He gets in touch to agree the price, the cuts and the timing.</p></li>
+      <li><span class="n">3</span><h3>Collect your beef</h3><p>Pick up from the farm or arrange delivery. Bring a cooler. Bring two.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section id="herd" class="gallery" aria-label="Photos of the herd">
+  <img class="wide" src="/img/herd-sunset.jpg" width="800" height="684" loading="lazy" alt="The herd behind a wire fence at sunset">
+  <img src="/img/herd-trough.jpg" width="800" height="684" loading="lazy" alt="Cattle gathered at the feed trough">
+  <img src="/img/herd-golden.jpg" width="800" height="684" loading="lazy" alt="The herd grazing a hillside at golden hour">
+</section>
+</main>
+
+<footer class="wrap site-footer">
+  <span>Lonely Tree Farm &#183; Home of Babey Beef</span>
+  <span>La Grange, Kentucky</span>
+</footer>
+</div>
+
+<dialog id="reserve" aria-labelledby="reserve-title">
+  <form id="reserve-form" novalidate>
+    <h2 id="reserve-title">Reserve</h2>
+    <p id="reserve-intro" class="dlg-intro"></p>
+    <label for="f-name">Your name</label>
+    <input id="f-name" name="name" autocomplete="name" maxlength="100" required>
+    <label for="f-phone">Phone number</label>
+    <input id="f-phone" name="phone" type="tel" autocomplete="tel" maxlength="40" required>
+    <label for="f-email">Email <span class="opt">(optional)</span></label>
+    <input id="f-email" name="email" type="email" autocomplete="email" maxlength="200">
+    <label for="f-note">Anything Alex should know <span class="opt">(optional)</span></label>
+    <textarea id="f-note" name="note" rows="3" maxlength="1000"></textarea>
+    <div class="hp" aria-hidden="true"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div>
+    <p id="reserve-error" class="error" role="alert"></p>
+    <div class="dlg-actions">
+      <button type="submit" class="btn btn-red" id="reserve-submit">Reserve</button>
+      <button type="button" class="btn btn-outline" id="reserve-cancel">Cancel</button>
+    </div>
+  </form>
+  <div id="reserve-done" hidden>
+    <h2>Thank you</h2>
+    <p id="reserve-done-text" tabindex="-1" role="status"></p>
+    <div class="dlg-actions"><button type="button" class="btn btn-red" id="reserve-close">Close</button></div>
+  </div>
+</dialog>
+
+<script src="/site.js"></script>
+</body>
+</html>

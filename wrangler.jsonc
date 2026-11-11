@@ -16,7 +16,8 @@
   ],
   "vars": {
     "ACCESS_TEAM_DOMAIN": "",
-    "ACCESS_AUD": ""
+    "ACCESS_AUD": "",
+    "ALERT_TO": "alerts@example.com"
   },
   "routes": [
     { "pattern": "lonelytreefarm.com", "custom_domain": true },
