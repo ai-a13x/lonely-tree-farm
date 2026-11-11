@@ -19,6 +19,7 @@ h1,h2,h3{font-weight:400}
 .brand{font:26px var(--slab);color:var(--ink);text-decoration:none;letter-spacing:.02em}
 .site-header nav{display:flex;flex-wrap:wrap;gap:8px 26px;font:700 18px var(--cond);letter-spacing:.08em;text-transform:uppercase}
 .site-header nav a{color:var(--ink);text-decoration:none;padding:6px 0}
+.header-cta{display:none}
 
 .hero{display:flex;flex-wrap:wrap;gap:56px;align-items:center;padding-top:64px;padding-bottom:96px}
 .hero-text{flex:1 1 520px;min-width:0}
@@ -102,9 +103,22 @@ dialog input,dialog textarea{width:100%;font:18px Barlow,system-ui,sans-serif;pa
 .dlg-actions .btn{font-size:20px;padding:11px 22px}
 #reserve-done-text{font-size:18px;line-height:1.5;outline:none}
 
+@media (max-width:760px){
+  .site-header{flex-wrap:nowrap;padding-top:12px;padding-bottom:12px}
+  .brand{font-size:clamp(16px,5vw,21px);white-space:nowrap}
+  .site-header nav{display:none}
+  .header-cta{display:inline-block;flex:none;font-size:16px;padding:8px 14px;min-height:44px;box-shadow:4px 4px 0 var(--ink)}
+  .hero{padding-top:24px;padding-bottom:56px;gap:28px}
+  .hero-photo{order:-1;flex-basis:100%}
+  .hero-photo img{height:300px;transform:rotate(1deg)}
+  .hero h1{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .tagline{margin-top:10px;font:clamp(40px,11.5vw,60px)/.95 var(--slab);color:var(--red)}
+  .lede{font-size:18px}
+  .actions{margin-top:26px}
+  .actions .btn{flex:1 1 100%}
+}
+
 @media (max-width:560px){
-  .hero{padding-top:40px;padding-bottom:64px;gap:40px}
-  .hero-photo img{height:320px}
   .sticker{left:0;font-size:16px}
   .family,.available,.how{padding-top:64px;padding-bottom:64px}
   .family-photos img{height:300px}
