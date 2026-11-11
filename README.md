@@ -10,7 +10,7 @@ Alex opens `/admin`, signed in through Cloudflare Access. From there he can:
 - Edit a listing (name, description, ready date, price, totals, order), hide or show it, or add a new one. An empty price shows "Ask Alex" on the site.
 - See every reservation with the buyer's phone (tap to call), email and note, then mark it collected or cancel it. Cancelling a reservation puts the share back on sale. Waiting list entries never change stock.
 
-Each new reservation or waiting list sign-up also emails an alert to `ALERT_TO`.
+Each new reservation or waiting list sign-up also emails an alert to the address in the `ALERT_TO` secret.
 
 ## Run locally
 
@@ -30,7 +30,7 @@ Locally the `/api/admin/*` routes answer 403, because no Access token exists. Th
 2. `npm run db:migrate:remote`
 3. Set `ACCESS_TEAM_DOMAIN` (for example `yourteam.cloudflareaccess.com`, no `https://`) and `ACCESS_AUD` (the Access application's audience tag) in `wrangler.jsonc`. While either is empty, every admin API call is refused.
 4. Add a Cloudflare Access application covering `lonelytreefarm.com/admin` and `lonelytreefarm.com/api/admin`.
-5. Turn on Email Routing for the domain and verify the destination address. `ALERT_TO` must match `destination_address` in the `send_email` block.
+5. Turn on Email Routing for the domain, verify the destination address, then set it with `npx wrangler secret put ALERT_TO`.
 6. `npm run deploy`
 
 The Worker checks the Access token on every admin API request as well, so the API stays closed even if the Access rule is misconfigured. The static `/admin` page itself is only protected by the Access rule.

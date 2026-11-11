@@ -4,6 +4,6 @@ export interface Env {
   ALERT: SendEmail;
   ACCESS_TEAM_DOMAIN: string;
   ACCESS_AUD: string;
-  /** Must equal send_email[ALERT].destination_address in wrangler.jsonc. */
+  /** Secret (wrangler secret put ALERT_TO). Must be a verified Email Routing destination address. */
   ALERT_TO: string;
 }

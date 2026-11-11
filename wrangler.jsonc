@@ -9,15 +9,14 @@
     "run_worker_first": ["/api/*"]
   },
   "d1_databases": [
-    { "binding": "DB", "database_name": "lonely-tree-farm", "database_id": "REPLACE_ME" }
+    { "binding": "DB", "database_name": "lonely-tree-farm", "database_id": "bd0bb2ff-98fe-4c26-ae0e-60102489f523" }
   ],
   "send_email": [
-    { "name": "ALERT", "destination_address": "alerts@example.com" }
+    { "name": "ALERT" }
   ],
   "vars": {
-    "ACCESS_TEAM_DOMAIN": "",
-    "ACCESS_AUD": "",
-    "ALERT_TO": "alerts@example.com"
+    "ACCESS_TEAM_DOMAIN": "sweet-surf-de72.cloudflareaccess.com",
+    "ACCESS_AUD": "8b41f5a448e3c5a7172350949de9a35c15704df24ba9e6c33e930f3cfeb80c82"
   },
   "routes": [
     { "pattern": "lonelytreefarm.com", "custom_domain": true },
