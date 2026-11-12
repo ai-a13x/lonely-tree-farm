@@ -41,7 +41,7 @@ h1,h2,h3{font-weight:400}
 
 .baron{display:flex;flex-wrap:wrap;gap:56px;align-items:center;padding-top:96px;padding-bottom:96px}
 .baron-photo{flex:1 1 420px;min-width:0}
-.baron-photo img{width:100%;height:560px;object-fit:cover;object-position:center 45%;display:block;border:6px solid var(--ink);transform:rotate(-1.5deg);background:var(--card)}
+.baron-photo img{width:100%;height:auto;display:block;border:6px solid var(--ink);transform:rotate(-1.5deg);background:var(--card)}
 .baron-text{flex:1 1 420px;min-width:0}
 .baron h2{margin:8px 0 0;font:clamp(48px,6vw,88px)/.9 var(--slab);color:var(--red)}
 .baron-text p:last-child{margin:22px 0 0;font-size:19px;line-height:1.6;max-width:460px}
@@ -128,7 +128,7 @@ dialog input,dialog textarea{width:100%;font:18px Barlow,system-ui,sans-serif;pa
   .sticker{left:0;font-size:16px}
   .family,.available,.how,.baron{padding-top:64px;padding-bottom:64px}
   .baron{gap:32px}
-  .baron-photo img{height:440px;transform:rotate(-1deg)}
+  .baron-photo img{transform:rotate(-1deg)}
   .family-photos img{height:300px}
   .family-photos .claire{height:300px}
   .badge{right:-6px;top:-14px;width:96px;height:96px}
